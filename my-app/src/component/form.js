@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { withFormik, Form, Field } from "formik";
+import { Form, Field, withFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const form = ({ errors, touched, values, status }) => {
+const UserForm = ({ errors, touched, values, status }) => {
   const [users, setUsers] = useState([]);
   console.log(users);
 
-  useEffect(() => {
+  useEffect((users) => {
     if (status) {
       setUsers([...users, status]);
     }
@@ -60,9 +60,14 @@ const form = ({ errors, touched, values, status }) => {
         </button>
       </Form>
 
-      {users.map(user => (
-        <p key={user.id}>{user.name}</p>
-      ))}
+      {users.length > 0
+        ? users.map(user => (
+            <ul key={user.id}>
+              <li>name: {user.name}</li>
+              <li>email: {user.email}</li>
+            </ul>
+          ))
+        : null}
     </div>
   );
 };
@@ -91,6 +96,6 @@ const FormikUserForm = withFormik({
       })
       .catch(error => console.log(error.response));
   }
-})(Form);
+})(UserForm);
 
 export default FormikUserForm;
